@@ -3,11 +3,20 @@ import { z } from 'zod';
 
 export const prerender = false;
 
+const SUBJECTS = [
+  'Web Hosting',
+  'Game Server Hosting',
+  'TeamSpeak Hosting',
+  'Discord Bot Hosting',
+  'Lavalink Hosting',
+  'General',
+] as const;
+
 const schema = z.object({
   name: z.string().min(2).max(100),
   email: z.string().email(),
-  subject: z.enum(['Web Hosting', 'TeamSpeak Hosting', 'Discord Bot Hosting', 'General']),
-  message: z.string().min(20).max(2000),
+  subject: z.enum(SUBJECTS),
+  message: z.string().min(10).max(2000),
   honeypot: z.string().max(0),
 });
 
@@ -27,7 +36,7 @@ export const POST: APIRoute = async ({ request }) => {
   const { name, email, subject, message } = result.data;
 
   const apiKey = import.meta.env.RESEND_API_KEY;
-  const contactEmail = import.meta.env.CONTACT_EMAIL ?? 'admin@press5.xyz';
+  const contactEmail = import.meta.env.CONTACT_EMAIL ?? 'admin@snaildev.uk';
 
   if (!apiKey) {
     // Dev mode: just log and succeed
@@ -43,15 +52,20 @@ export const POST: APIRoute = async ({ request }) => {
     await resend.emails.send({
       from: 'Press5 Contact <noreply@press5.xyz>',
       to: contactEmail,
+      replyTo: email,
       subject: `[Press5] ${subject} enquiry from ${name}`,
       html: `
-        <h2>New contact form submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-        <p><strong>Subject:</strong> ${subject}</p>
-        <hr/>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, '<br/>')}</p>
+        <div style="font-family: sans-serif; max-width: 600px;">
+          <h2 style="color: #2563EB;">New enquiry — ${subject}</h2>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr><td style="padding: 8px 0; font-weight: bold; color: #374151; width: 100px;">Name</td><td style="padding: 8px 0;">${name}</td></tr>
+            <tr><td style="padding: 8px 0; font-weight: bold; color: #374151;">Email</td><td style="padding: 8px 0;"><a href="mailto:${email}">${email}</a></td></tr>
+            <tr><td style="padding: 8px 0; font-weight: bold; color: #374151;">Service</td><td style="padding: 8px 0;">${subject}</td></tr>
+          </table>
+          <hr style="margin: 16px 0; border: none; border-top: 1px solid #E5E7EB;" />
+          <h3 style="color: #374151; margin-bottom: 8px;">Message</h3>
+          <p style="color: #4B5563; line-height: 1.6;">${message.replace(/\n/g, '<br/>')}</p>
+        </div>
       `,
     });
 
@@ -59,13 +73,15 @@ export const POST: APIRoute = async ({ request }) => {
     await resend.emails.send({
       from: 'Press5.xyz <noreply@press5.xyz>',
       to: email,
-      subject: `We received your message — Press5.xyz`,
+      subject: `We got your message — Press5.xyz`,
       html: `
-        <h2>Thanks for reaching out, ${name}!</h2>
-        <p>We've received your message about <strong>${subject}</strong> and will get back to you within 24 hours.</p>
-        <p>In the meantime, feel free to join our TeamSpeak server at <strong>press5.xyz</strong> for a quicker chat.</p>
-        <br/>
-        <p>— The Press5.xyz Team</p>
+        <div style="font-family: sans-serif; max-width: 600px;">
+          <h2 style="color: #2563EB;">Thanks, ${name}!</h2>
+          <p style="color: #4B5563; line-height: 1.6;">We've received your enquiry about <strong>${subject}</strong> and will get back to you within 24 hours — usually sooner.</p>
+          <p style="color: #4B5563; line-height: 1.6;">In the meantime, you're welcome to join our TeamSpeak server at <strong>press5.xyz</strong> for a quicker chat.</p>
+          <br/>
+          <p style="color: #6B7280; font-size: 14px;">— The Press5.xyz Team</p>
+        </div>
       `,
     });
 

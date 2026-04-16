@@ -2,12 +2,54 @@
 import Layout from '../components/layout/Layout.astro';
 import ContactForm from '../components/forms/ContactForm';
 
-const defaultSubject = Astro.url.searchParams.get('service') ?? 'General';
+// Map URL ?service= values → subject enum values
+const SERVICE_MAP: Record<string, string> = {
+  'web-hosting':     'Web Hosting',
+  'game-servers':    'Game Server Hosting',
+  'teamspeak':       'TeamSpeak Hosting',
+  'discord-bots':    'Discord Bot Hosting',
+  'lavalink':        'Lavalink Hosting',
+  'general':         'General',
+};
+
+const params = Astro.url.searchParams;
+const serviceSlug  = params.get('service') ?? '';
+const plan         = params.get('plan') ?? '';
+const slots        = params.get('slots') ?? '';
+const game         = params.get('game') ?? '';
+const nodes        = params.get('nodes') ?? '';
+
+const defaultSubject = SERVICE_MAP[serviceSlug] ?? 'General';
+
+// Build a smart pre-filled message based on what was clicked
+let defaultMessage = '';
+
+if (serviceSlug === 'web-hosting' && plan) {
+  defaultMessage = `Hi,\n\nI'd like to order the ${plan} web hosting plan.\n\nPlease let me know the next steps.`;
+} else if (serviceSlug === 'web-hosting') {
+  defaultMessage = `Hi,\n\nI'm interested in web hosting. Could you tell me more about your plans?\n\nThanks`;
+} else if (serviceSlug === 'teamspeak' && slots) {
+  defaultMessage = `Hi,\n\nI'd like to order a ${slots}-slot TeamSpeak server.\n\nPlease let me know the next steps.`;
+} else if (serviceSlug === 'teamspeak') {
+  defaultMessage = `Hi,\n\nI'm interested in TeamSpeak server hosting. Could you let me know your current availability and pricing?\n\nThanks`;
+} else if (serviceSlug === 'game-servers' && game) {
+  defaultMessage = `Hi,\n\nI'd like to get a quote for a ${game} game server.\n\nCould you let me know what you'd recommend for our community?\n\nThanks`;
+} else if (serviceSlug === 'game-servers') {
+  defaultMessage = `Hi,\n\nI'm looking to set up a game server for my community. Could you send over a custom quote?\n\nGame:\nApprox. player count:\nAny mods/plugins:\n\nThanks`;
+} else if (serviceSlug === 'discord-bots' && plan) {
+  defaultMessage = `Hi,\n\nI'd like to order the ${plan} Discord bot hosting plan.\n\nPlease let me know the next steps.`;
+} else if (serviceSlug === 'discord-bots') {
+  defaultMessage = `Hi,\n\nI'm interested in having you host a Discord bot for my server. Could you tell me more about your plans?\n\nThanks`;
+} else if (serviceSlug === 'lavalink' && plan) {
+  defaultMessage = `Hi,\n\nI'd like to order the ${plan} Lavalink hosting plan.\n\nPlease let me know the next steps.`;
+} else if (serviceSlug === 'lavalink') {
+  defaultMessage = `Hi,\n\nI'm interested in Lavalink node hosting. Could you tell me more?\n\nThanks`;
+}
 ---
 
 <Layout
   title="Contact Us"
-  description="Get in touch with Press5.xyz for web hosting, TeamSpeak server hosting, or Discord bot hosting enquiries. We typically respond within 24 hours."
+  description="Get in touch with Press5.xyz for web hosting, TeamSpeak, game server, or Discord bot enquiries. UK-based, real people, typical reply within 24 hours."
 >
   <!-- Header strip -->
   <div class="bg-brand-gradient py-16">
@@ -26,7 +68,11 @@ const defaultSubject = Astro.url.searchParams.get('service') ?? 'General';
         <div class="lg:col-span-2">
           <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Send us a message</h2>
-            <ContactForm client:load defaultSubject={defaultSubject} />
+            <ContactForm
+              client:load
+              defaultSubject={defaultSubject}
+              defaultMessage={defaultMessage}
+            />
           </div>
         </div>
 
@@ -48,9 +94,16 @@ const defaultSubject = Astro.url.searchParams.get('service') ?? 'General';
               href="ts3server://press5.xyz"
               class="block text-center py-2.5 bg-brand-gradient text-white font-semibold rounded-xl text-sm hover:opacity-90 transition-opacity"
             >
-              Connect to press5.xyz
+              Connect to Netplayers
             </a>
-            <p class="text-xs text-gray-400 mt-2 text-center">Opens in TeamSpeak client</p>
+            <p class="text-xs text-gray-400 mt-2 text-center">Opens in TeamSpeak client · press5.xyz</p>
+          </div>
+
+          <!-- Email direct -->
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+            <div class="text-2xl mb-3">✉️</div>
+            <h3 class="font-bold text-gray-900 mb-2">Email Us Directly</h3>
+            <a href="mailto:admin@snaildev.uk" class="text-brand-blue hover:underline text-sm font-medium">admin@snaildev.uk</a>
           </div>
 
           <!-- Services -->
@@ -58,27 +111,17 @@ const defaultSubject = Astro.url.searchParams.get('service') ?? 'General';
             <div class="text-2xl mb-3">💼</div>
             <h3 class="font-bold text-gray-900 mb-3">We Can Help With</h3>
             <ul class="space-y-2 text-sm text-gray-600">
-              <li class="flex items-center gap-2">
-                <span class="text-brand-blue">→</span> Web hosting setup & migration
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="text-brand-blue">→</span> TeamSpeak server orders
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="text-brand-blue">→</span> Discord bot hosting & deployment
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="text-brand-blue">→</span> Billing & account questions
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="text-brand-blue">→</span> Custom or enterprise requirements
-              </li>
+              <li class="flex items-center gap-2"><span class="text-brand-blue">→</span> Web hosting setup & migration</li>
+              <li class="flex items-center gap-2"><span class="text-brand-blue">→</span> Game server configuration</li>
+              <li class="flex items-center gap-2"><span class="text-brand-blue">→</span> TeamSpeak server orders</li>
+              <li class="flex items-center gap-2"><span class="text-brand-blue">→</span> Discord bot hosting & deployment</li>
+              <li class="flex items-center gap-2"><span class="text-brand-blue">→</span> Lavalink node setup</li>
+              <li class="flex items-center gap-2"><span class="text-brand-blue">→</span> Billing & account questions</li>
             </ul>
           </div>
 
-          <!-- Disclaimer -->
           <p class="text-xs text-gray-400 text-center">
-            Press5.xyz is UK-based. All prices quoted in GBP. We're real people, not a ticket system.
+            Press5.xyz is UK-based. All prices quoted in GBP.<br/>We're real people, not a ticket system.
           </p>
         </div>
       </div>

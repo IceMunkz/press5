@@ -2,44 +2,130 @@
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
 interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  /** Pass the page FAQ array to auto-generate FAQPage schema for rich results */
+  faqs?: FaqItem[];
+  /** Override the full <title> tag (skips " | Press5.xyz" suffix) */
+  rawTitle?: string;
 }
 
 const {
   title,
-  description = 'Fast, secure, and reliable hosting solutions. Web hosting, TeamSpeak servers, and Discord bot hosting from an experienced UK provider.',
+  description = 'Fast, secure, and reliable hosting solutions. Web hosting, TeamSpeak servers, game servers, and Discord bot hosting from an experienced UK provider since 2004.',
   ogImage = '/og-default.png',
+  faqs,
+  rawTitle,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://press5.xyz');
+const fullTitle = rawTitle ?? `${title} | Press5.xyz`;
+
+// ── JSON-LD: LocalBusiness (always present) ──────────────────────────────────
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Press5.xyz',
+  alternateName: 'Press5',
+  description: 'UK-based web hosting, TeamSpeak server hosting, game server hosting, and Discord bot hosting provider with over 20 years of experience.',
+  url: 'https://press5.xyz',
+  logo: 'https://press5.xyz/logo.png',
+  foundingDate: '2004',
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'GB',
+  },
+  areaServed: ['GB', 'EU'],
+  priceRange: '££',
+  currenciesAccepted: 'GBP',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    email: 'admin@snaildev.uk',
+    availableLanguage: 'English',
+  },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Hosting Services',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Web Hosting', url: 'https://press5.xyz/web-hosting' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'TeamSpeak Server Hosting', url: 'https://press5.xyz/teamspeak' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Game Server Hosting', url: 'https://press5.xyz/game-servers' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Discord Bot Hosting', url: 'https://press5.xyz/discord-bots' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Lavalink Hosting', url: 'https://press5.xyz/lavalink' } },
+    ],
+  },
+};
+
+// ── JSON-LD: FAQPage (when faqs are provided) ────────────────────────────────
+const faqSchema = faqs && faqs.length > 0
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f: FaqItem) => ({
+        '@type': 'Question',
+        name: f.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: f.answer,
+        },
+      })),
+    }
+  : null;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary meta -->
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta name="author" content="Press5.xyz" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#2563EB" />
+
+    <!-- Geo / local SEO -->
+    <meta name="geo.region" content="GB" />
+    <meta name="geo.placename" content="United Kingdom" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={`https://press5.xyz${ogImage}`} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Press5.xyz" />
+    <meta property="og:locale" content="en_GB" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={`https://press5.xyz${ogImage}`} />
 
+    <!-- Canonical + hreflang -->
     <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" hreflang="en-gb" href={canonicalURL} />
+    <link rel="alternate" hreflang="en" href={canonicalURL} />
+
+    <!-- Sitemap discovery -->
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -47,7 +133,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://press5.x
       rel="stylesheet"
     />
 
-    <title>{title} | Press5.xyz</title>
+    <!-- JSON-LD: LocalBusiness (every page) -->
+    <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+
+    <!-- JSON-LD: FAQPage (only on pages that pass faqs prop) -->
+    {faqSchema && (
+      <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+    )}
   </head>
   <body class="font-sans bg-white text-gray-900 antialiased">
     <Header />

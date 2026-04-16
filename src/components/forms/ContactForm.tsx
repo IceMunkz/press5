@@ -3,11 +3,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useState } from 'react';
 
+const SUBJECTS = [
+  'Web Hosting',
+  'Game Server Hosting',
+  'TeamSpeak Hosting',
+  'Discord Bot Hosting',
+  'Lavalink Hosting',
+  'General',
+] as const;
+
 const schema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100),
   email: z.string().email('Please enter a valid email address'),
-  subject: z.enum(['Web Hosting', 'TeamSpeak Hosting', 'Discord Bot Hosting', 'General']),
-  message: z.string().min(20, 'Message must be at least 20 characters').max(2000),
+  subject: z.enum(SUBJECTS),
+  message: z.string().min(10, 'Message must be at least 10 characters').max(2000),
   honeypot: z.string().max(0, 'Bot detected'),
 });
 
@@ -15,9 +24,10 @@ type FormData = z.infer<typeof schema>;
 
 interface Props {
   defaultSubject?: string;
+  defaultMessage?: string;
 }
 
-export default function ContactForm({ defaultSubject }: Props) {
+export default function ContactForm({ defaultSubject, defaultMessage }: Props) {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
   const {
@@ -27,7 +37,10 @@ export default function ContactForm({ defaultSubject }: Props) {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      subject: (defaultSubject as FormData['subject']) ?? 'General',
+      subject: (SUBJECTS.includes(defaultSubject as (typeof SUBJECTS)[number])
+        ? defaultSubject
+        : 'General') as FormData['subject'],
+      message: defaultMessage ?? '',
       honeypot: '',
     },
   });
@@ -104,10 +117,9 @@ export default function ContactForm({ defaultSubject }: Props) {
           {...register('subject')}
           className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition"
         >
-          <option>Web Hosting</option>
-          <option>TeamSpeak Hosting</option>
-          <option>Discord Bot Hosting</option>
-          <option>General</option>
+          {SUBJECTS.map(s => (
+            <option key={s} value={s}>{s}</option>
+          ))}
         </select>
         {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject.message}</p>}
       </div>
@@ -119,7 +131,7 @@ export default function ContactForm({ defaultSubject }: Props) {
         <textarea
           id="message"
           {...register('message')}
-          rows={5}
+          rows={6}
           className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition resize-none"
           placeholder="Tell us what you need..."
         />
@@ -128,7 +140,8 @@ export default function ContactForm({ defaultSubject }: Props) {
 
       {status === 'error' && (
         <div className="bg-red-50 border border-red-100 rounded-xl px-4 py-3 text-sm text-red-700">
-          Something went wrong. Please try again or email us directly.
+          Something went wrong. Please try again or email us directly at{' '}
+          <a href="mailto:admin@snaildev.uk" className="underline">admin@snaildev.uk</a>.
         </div>
       )}
 
