@@ -1,0 +1,255 @@
+---
+import Layout from '../components/layout/Layout.astro';
+import Hero from '../components/sections/Hero.astro';
+import TrustBar from '../components/sections/TrustBar.astro';
+import FeatureGrid from '../components/sections/FeatureGrid.astro';
+import CTABanner from '../components/sections/CTABanner.astro';
+import PricingTable from '../components/sections/PricingTable';
+import Accordion from '../components/ui/Accordion';
+
+const features = [
+  { icon: '🇬🇧', title: 'UK-Based Nodes', description: 'Our Lavalink servers are hosted in the UK for the lowest possible latency to UK and EU Discord users.' },
+  { icon: '⚡', title: 'Low Latency Audio', description: 'Optimised network stack and fast uplinks mean smooth, uninterrupted playback with minimal buffering.' },
+  { icon: '🎵', title: 'All Major Sources', description: 'Supports YouTube, Spotify (via plugin), SoundCloud, Bandcamp, Twitch streams, and direct HTTP.' },
+  { icon: '🔌', title: 'Plugin Support', description: 'Run Lavalink plugins including LavaSrc (Spotify/Apple Music), LavaSearch, and custom plugins.' },
+  { icon: '🛡️', title: 'DDoS Protected', description: 'All Lavalink nodes sit behind enterprise-grade DDoS protection. Your streams stay online under attack.' },
+  { icon: '📊', title: 'Stats & Monitoring', description: 'Real-time node stats via the Lavalink REST API and WebSocket — memory, CPU, player count, uptime.' },
+  { icon: '🔄', title: 'Auto-Restart', description: 'If Lavalink crashes for any reason, it restarts automatically within seconds. No manual intervention needed.' },
+  { icon: '🔑', title: 'Private Password', description: 'Your Lavalink node is secured with a private password only you know. Not shared with other customers.' },
+];
+
+const tiers = [
+  {
+    name: 'Shared',
+    monthlyPrice: 3.99,
+    annualPrice: 3.32,
+    description: 'Shared Lavalink node, ideal for small bots and testing.',
+    features: [
+      'Shared Lavalink node',
+      'Up to 100 concurrent players',
+      'All audio sources supported',
+      'Plugin support',
+      'UK data centre',
+      '99.9% uptime SLA',
+      'Email support',
+    ],
+    ctaLabel: 'Order Shared',
+    ctaHref: '/contact?service=lavalink&plan=shared',
+  },
+  {
+    name: 'Standard',
+    monthlyPrice: 8.99,
+    annualPrice: 7.49,
+    description: 'Semi-dedicated node for active bots on larger servers.',
+    features: [
+      'Semi-dedicated Lavalink node',
+      'Up to 500 concurrent players',
+      'All audio sources supported',
+      'Plugin support',
+      'UK data centre',
+      '99.9% uptime SLA',
+      'Priority email support',
+      'Custom Lavalink config',
+      'Latest Lavalink version kept up to date',
+    ],
+    popular: true,
+    ctaLabel: 'Order Standard',
+    ctaHref: '/contact?service=lavalink&plan=standard',
+  },
+  {
+    name: 'Premium',
+    monthlyPrice: 16.99,
+    annualPrice: 14.16,
+    description: 'Fully dedicated node for high-traffic music bots.',
+    features: [
+      'Dedicated Lavalink node',
+      'Unlimited concurrent players',
+      'All audio sources supported',
+      'Plugin support',
+      'UK data centre',
+      '99.9% uptime SLA',
+      'Priority support (fast response)',
+      'Custom Lavalink config',
+      'Latest Lavalink version kept up to date',
+      'Direct SSH access to check logs',
+      'Custom Java version & JVM flags',
+    ],
+    ctaLabel: 'Order Premium',
+    ctaHref: '/contact?service=lavalink&plan=premium',
+  },
+];
+
+const faqs = [
+  {
+    question: 'What is Lavalink?',
+    answer: 'Lavalink is a standalone audio sending node for Discord bots, built on Lavaplayer. Instead of your bot processing audio directly (which is CPU-intensive), it connects to a Lavalink server which handles all the audio streaming. This makes your bot faster, more scalable, and lets you run music across multiple servers without performance issues.',
+  },
+  {
+    question: 'Which Discord.js / Discord.py libraries are compatible?',
+    answer: 'Any library that supports the Lavalink v4 protocol works. Common ones include discord.js with lavalink-client or shoukaku, discord.py with wavelink or mafic, and Java/Kotlin bots with LavaPlayer or Koe. Basically any modern Lavalink client library is supported.',
+  },
+  {
+    question: 'Do you support Lavalink v3 or v4?',
+    answer: 'We run Lavalink v4, which is the current stable major version. If you need v3 for legacy bots, let us know when ordering and we can discuss options — though we strongly recommend migrating to v4.',
+  },
+  {
+    question: 'What audio sources are supported?',
+    answer: 'Out of the box: YouTube, SoundCloud, Bandcamp, Twitch streams, Vimeo, and direct HTTP/HTTPS audio links. With our LavaSrc plugin pre-installed you also get Spotify, Apple Music, and Deezer track resolution.',
+  },
+  {
+    question: 'What is a "concurrent player"?',
+    answer: 'A concurrent player is one active audio stream — i.e., one Discord voice channel your bot is actively playing music in at the same time. If your bot plays music in 10 different servers simultaneously, that\'s 10 concurrent players.',
+  },
+  {
+    question: 'Will you set it up for me?',
+    answer: 'Yes. After you order, we set up the Lavalink node and send you the connection details: host, port, and password. You paste these into your bot config and you\'re done. We handle all the server-side setup.',
+  },
+  {
+    question: 'Can I use multiple Lavalink nodes for load balancing?',
+    answer: 'Absolutely. If you need redundancy or want to spread load across regions, order multiple plans and configure your bot to use multiple nodes. Most modern Lavalink client libraries support multi-node load balancing natively.',
+  },
+  {
+    question: 'What happens if Lavalink goes down?',
+    answer: 'We monitor all nodes 24/7. If a node crashes, it auto-restarts within seconds. For planned maintenance we give advance notice. Unplanned outages are covered by our 99.9% SLA and we communicate via our status page.',
+  },
+];
+---
+
+<Layout
+  title="Lavalink Server Hosting"
+  description="UK-based Lavalink server hosting for Discord music bots. Low latency, DDoS protected, Spotify support. From £3.99/month."
+>
+  <Hero
+    title="Lavalink Hosting Built for Discord Music Bots"
+    subtitle="UK-based Lavalink nodes with low latency audio, Spotify support, and 24/7 uptime. Your bot streams music — we handle the infrastructure."
+  >
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a
+        href="#pricing"
+        class="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-blue font-bold rounded-xl hover:bg-blue-50 transition-colors shadow-lg"
+      >
+        View Plans
+      </a>
+      <a
+        href="/contact?service=lavalink"
+        class="inline-flex items-center gap-2 px-8 py-4 border-2 border-white/40 text-white font-bold rounded-xl hover:bg-white/10 transition-colors"
+      >
+        Get a Quote
+      </a>
+    </div>
+  </Hero>
+
+  <TrustBar />
+
+  <!-- What is Lavalink explainer -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm font-semibold mb-4">
+            🎵 What is Lavalink?
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            The audio backbone every serious music bot needs
+          </h2>
+          <p class="text-gray-600 leading-relaxed mb-4">
+            Lavalink is a standalone audio server that your Discord bot connects to. Instead of your bot processing audio itself — which kills performance at scale — Lavalink handles all the streaming, buffering, and audio encoding separately.
+          </p>
+          <p class="text-gray-600 leading-relaxed mb-6">
+            The result: your bot stays fast and responsive even with hundreds of servers playing music simultaneously. It's the same technology used by the biggest Discord music bots.
+          </p>
+          <div class="bg-gray-900 rounded-xl p-4 font-mono text-xs text-green-400">
+            <p class="text-gray-500 mb-2"># Example config snippet for your bot</p>
+            <p>host: <span class="text-yellow-300">lava.press5.xyz</span></p>
+            <p>port: <span class="text-yellow-300">2333</span></p>
+            <p>password: <span class="text-yellow-300">your-private-password</span></p>
+            <p>secure: <span class="text-blue-300">false</span></p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          {[
+            { label: 'Without Lavalink', items: ['Bot handles all audio encoding', 'High CPU usage on bot process', 'Stuttering at scale', 'Complex to deploy'], bad: true },
+            { label: 'With Lavalink', items: ['Lavalink handles all audio', 'Bot stays fast & lightweight', 'Scales to 1000s of servers', 'Simple — just host, port, password'], bad: false },
+          ].map(col => (
+            <div class={`rounded-2xl p-5 ${col.bad ? 'bg-red-50 border border-red-100' : 'bg-green-50 border border-green-100'}`}>
+              <h4 class={`font-bold text-sm mb-3 ${col.bad ? 'text-red-700' : 'text-green-700'}`}>{col.label}</h4>
+              <ul class="space-y-2">
+                {col.items.map(item => (
+                  <li class={`text-xs flex items-start gap-2 ${col.bad ? 'text-red-600' : 'text-green-700'}`}>
+                    <span class="flex-shrink-0">{col.bad ? '✗' : '✓'}</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FeatureGrid
+    title="Everything Included on Every Plan"
+    subtitle="No hidden extras. Just a properly configured, always-online Lavalink node."
+    features={features}
+    columns={4}
+  />
+
+  <!-- Supported sources grid -->
+  <section class="py-16 bg-white border-t border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">Supported Audio Sources</h2>
+      <p class="text-gray-500 mb-8 text-sm">All plans include LavaSrc plugin for Spotify, Apple Music, and Deezer</p>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        {['YouTube', 'Spotify', 'SoundCloud', 'Apple Music', 'Deezer', 'Bandcamp', 'Twitch', 'Vimeo', 'HTTP Streams'].map(src => (
+          <span class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
+            {src}
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div id="pricing">
+    <PricingTable
+      client:load
+      tiers={tiers}
+      title="Lavalink Hosting Plans"
+      subtitle="All prices in GBP. No setup fees. Cancel any time. Annual billing saves you 2 months."
+    />
+  </div>
+
+  <Accordion
+    client:load
+    title="Lavalink FAQ"
+    items={faqs}
+  />
+
+  <!-- Managed bots callout -->
+  <section class="py-12 bg-white border-t border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-gray-50 border border-gray-200 rounded-2xl p-8 flex flex-col sm:flex-row items-center gap-6">
+        <div class="text-5xl">🤖</div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold text-gray-900 mb-1">Don't want to run your own bot?</h3>
+          <p class="text-gray-600 text-sm">Check out our managed Discord bots service — we host and maintain 20 of the most popular bots so you don't have to build or run anything.</p>
+        </div>
+        <a
+          href="/discord-bots"
+          class="flex-shrink-0 px-6 py-3 bg-brand-gradient text-white font-bold rounded-xl hover:opacity-90 transition-opacity whitespace-nowrap"
+        >
+          View Managed Bots →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    title="Ready to power up your music bot?"
+    subtitle="Get a UK-based Lavalink node set up within the hour. Plans from £3.99/month."
+    primaryHref="/contact?service=lavalink"
+    primaryLabel="Order Now"
+    secondaryHref="#pricing"
+    secondaryLabel="See Plans"
+  />
+</Layout>

@@ -1,0 +1,127 @@
+---
+const navLinks = [
+  { href: '/web-hosting', label: 'Web Hosting', icon: 'globe' },
+  { href: '/game-servers', label: 'Game Servers', icon: 'gamepad' },
+  { href: '/teamspeak', label: 'TeamSpeak', icon: 'server' },
+  { href: '/discord-bots', label: 'Discord Bots', icon: 'bot' },
+  { href: '/lavalink', label: 'Lavalink', icon: 'music' },
+  { href: '/status', label: 'Status', icon: 'activity' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header
+  id="site-header"
+  class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 transition-all duration-300"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2 flex-shrink-0">
+        <img src="/logo.png" alt="Press5.xyz" class="h-8 w-auto" onerror="this.style.display='none'" />
+        <span class="text-xl font-bold bg-brand-gradient bg-clip-text text-transparent">
+          Press5.xyz
+        </span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-1">
+        {navLinks.map(link => (
+          <a
+            href={link.href}
+            class:list={[
+              'px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200',
+              currentPath === link.href || currentPath.startsWith(link.href + '/')
+                ? 'bg-blue-50 text-brand-blue'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50',
+            ]}
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
+      <!-- CTA -->
+      <div class="hidden md:flex items-center gap-3">
+        <a href="/contact" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+          Contact
+        </a>
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-2 px-4 py-2 bg-brand-gradient text-white text-sm font-semibold rounded-lg hover:opacity-90 transition-opacity shadow-sm"
+        >
+          Get Started
+        </a>
+      </div>
+
+      <!-- Mobile burger -->
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+        aria-label="Toggle menu"
+      >
+        <svg class="w-6 h-6" id="burger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg class="w-6 h-6 hidden" id="close-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white">
+    <div class="px-4 py-3 space-y-1">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class:list={[
+            'flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+            currentPath === link.href
+              ? 'bg-blue-50 text-brand-blue'
+              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50',
+          ]}
+        >
+          {link.label}
+        </a>
+      ))}
+      <div class="pt-2 border-t border-gray-100">
+        <a
+          href="/contact"
+          class="flex items-center justify-center w-full px-4 py-2 bg-brand-gradient text-white text-sm font-semibold rounded-lg"
+        >
+          Get Started
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Spacer for fixed header -->
+<div class="h-16"></div>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const burgerIcon = document.getElementById('burger-icon');
+  const closeIcon = document.getElementById('close-icon');
+
+  btn?.addEventListener('click', () => {
+    const isOpen = !menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden');
+    burgerIcon?.classList.toggle('hidden', !isOpen);
+    closeIcon?.classList.toggle('hidden', isOpen);
+  });
+
+  // Shrink header on scroll
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 10) {
+      header?.classList.add('shadow-sm');
+    } else {
+      header?.classList.remove('shadow-sm');
+    }
+  });
+</script>

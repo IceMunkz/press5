@@ -1,0 +1,22 @@
+---
+const badges = [
+  { label: 'Est. 2004', icon: '🏛️' },
+  { label: '20+ Years Experience', icon: '⭐' },
+  { label: 'UK-Based', icon: '🇬🇧' },
+  { label: '99.9% Uptime', icon: '📈' },
+  { label: '24/7 Support', icon: '🛡️' },
+];
+---
+
+<div class="bg-gray-50 border-b border-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
+      {badges.map(badge => (
+        <div class="flex items-center gap-2 text-sm font-medium text-gray-700">
+          <span>{badge.icon}</span>
+          <span>{badge.label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>

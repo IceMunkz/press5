@@ -1,0 +1,261 @@
+---
+import Layout from '../components/layout/Layout.astro';
+import Hero from '../components/sections/Hero.astro';
+import TrustBar from '../components/sections/TrustBar.astro';
+import CTABanner from '../components/sections/CTABanner.astro';
+import PricingTable from '../components/sections/PricingTable';
+import Accordion from '../components/ui/Accordion';
+
+// The 20 curated bots we host and maintain
+const bots = [
+  { icon: '🛡️', name: 'Moderation', desc: 'Kick, ban, mute, warn, and timed actions with full audit logs.' },
+  { icon: '🤖', name: 'Auto-Mod', desc: 'AI-powered filter for spam, links, slurs, and invite links.' },
+  { icon: '🎭', name: 'Reaction Roles', desc: 'Self-assignable roles via emoji reactions or button menus.' },
+  { icon: '👋', name: 'Welcome Bot', desc: 'Custom welcome/leave messages with embed support and DMs.' },
+  { icon: '🎫', name: 'Ticket System', desc: 'Support ticket channels with staff transcripts and categories.' },
+  { icon: '⭐', name: 'Leveling & XP', desc: 'Voice and text XP with rank cards, role rewards, and leaderboards.' },
+  { icon: '💰', name: 'Economy', desc: 'Full economy system — balance, shop, work, gamble, rob, and leaderboards.' },
+  { icon: '🎵', name: 'Music (Lavalink)', desc: 'High-quality music via our Lavalink nodes. YouTube, Spotify, SoundCloud.' },
+  { icon: '📋', name: 'Playlist Manager', desc: 'Save, load, and share playlists across sessions.' },
+  { icon: '🎁', name: 'Giveaways', desc: 'Timed giveaways with role requirements, re-rolls, and multi-winner.' },
+  { icon: '📊', name: 'Polls & Voting', desc: 'Embedded polls with live vote counts and scheduled close.' },
+  { icon: '📈', name: 'Server Stats', desc: 'Real-time member count, boost count, and activity graphs.' },
+  { icon: '🔢', name: 'Member Counter', desc: 'Automatically updated voice channel counters for members, bots, and roles.' },
+  { icon: '🚨', name: 'Anti-Raid', desc: 'Detects mass-joins, mention spam, and account age attacks.' },
+  { icon: '💡', name: 'Suggestions', desc: 'Suggestion board with upvote/downvote and staff approval workflow.' },
+  { icon: '⭐', name: 'Starboard', desc: 'Pin fan-favourite messages to a dedicated starboard channel.' },
+  { icon: '🏷️', name: 'Auto-Role', desc: 'Assign roles on join, on verification, and on boost automatically.' },
+  { icon: '📝', name: 'Audit Logger', desc: 'Comprehensive logging of deletes, edits, joins, bans, and more.' },
+  { icon: '🎮', name: 'Fun & Games', desc: 'Trivia, 8-ball, memes, dice, coinflip, and mini-games.' },
+  { icon: '⚙️', name: 'Custom Commands', desc: 'Create your own text commands and auto-responders without code.' },
+];
+
+const tiers = [
+  {
+    name: 'Starter',
+    monthlyPrice: 3.99,
+    annualPrice: 3.32,
+    description: 'Perfect for small communities wanting a few essential bots.',
+    features: [
+      'Choose any 5 bots from our library',
+      'Shared bot instances',
+      '1 Discord server',
+      '99.9% uptime SLA',
+      'Web dashboard to configure bots',
+      'Email support',
+    ],
+    ctaLabel: 'Get Started',
+    ctaHref: '/contact?service=discord-bots',
+  },
+  {
+    name: 'Plus',
+    monthlyPrice: 7.99,
+    annualPrice: 6.66,
+    description: 'All 20 bots, great for active and growing servers.',
+    features: [
+      'All 20 bots from our library',
+      'Shared bot instances',
+      'Up to 3 Discord servers',
+      '99.9% uptime SLA',
+      'Web dashboard to configure bots',
+      'Priority email support',
+      'Custom bot prefix',
+    ],
+    popular: true,
+    ctaLabel: 'Get Plus',
+    ctaHref: '/contact?service=discord-bots',
+  },
+  {
+    name: 'Premium',
+    monthlyPrice: 14.99,
+    annualPrice: 12.49,
+    description: 'Dedicated instances and priority for high-traffic servers.',
+    features: [
+      'All 20 bots from our library',
+      'Dedicated bot instances (no shared load)',
+      'Unlimited Discord servers',
+      '99.9% uptime SLA',
+      'Web dashboard to configure bots',
+      'Priority support with faster response',
+      'Custom bot prefix',
+      'Early access to new bots',
+      'Custom branding on welcome/ticket bots',
+    ],
+    ctaLabel: 'Get Premium',
+    ctaHref: '/contact?service=discord-bots',
+  },
+];
+
+const faqs = [
+  {
+    question: 'How do I add a bot to my Discord server?',
+    answer: 'After subscribing, you get access to our dashboard. From there, you can generate an invite link for any bot in your plan and authorise it on your server in the normal Discord way. Setup takes about 2 minutes.',
+  },
+  {
+    question: 'Are these bots custom-built or popular open-source bots?',
+    answer: 'Our bot library consists of the best open-source Discord bots available, selected and curated by us. We handle updates, patches, and uptime so you never have to. You just configure them through our dashboard.',
+  },
+  {
+    question: 'Can I use the music bot without a Lavalink plan?',
+    answer: 'Yes — the music bot uses our own Lavalink infrastructure at no extra cost on Plus and Premium plans. If you want to run your own Lavalink-powered bot separately, check out our Lavalink hosting page.',
+  },
+  {
+    question: 'What happens if a bot goes offline?',
+    answer: 'We monitor all bots 24/7 and restart them automatically within seconds of any crash. You can also check live status on our status page. If there\'s a wider issue, we post updates there.',
+  },
+  {
+    question: 'Can I use the bots on multiple servers?',
+    answer: 'Starter covers 1 server. Plus covers up to 3 servers. Premium is unlimited. The same bot configuration can be applied across all your authorised servers.',
+  },
+  {
+    question: 'Do the bots have ads or watermarks?',
+    answer: 'No. We don\'t run ads or inject watermarks into any bot responses. On Premium you can additionally set custom branding on bots like the Welcome and Ticket bots.',
+  },
+  {
+    question: 'What\'s the difference between shared and dedicated instances?',
+    answer: 'On shared plans, bot commands share processing resources across subscribers. On Premium, your bots run on dedicated resources — meaning faster response times and no slowdown during peak hours on other servers.',
+  },
+];
+---
+
+<Layout
+  title="Managed Discord Bots"
+  description="We host and maintain the top 20 most popular Discord bots so you don't have to. Moderation, music, economy, tickets and more. From £3.99/month."
+>
+  <Hero
+    title="The Top 20 Discord Bots. Hosted &amp; Maintained for You."
+    subtitle="We run and maintain a curated library of 20 of the most popular Discord bots. No setup, no crashes, no updates to manage — just invite and configure."
+  >
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a
+        href="#bots"
+        class="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-blue font-bold rounded-xl hover:bg-blue-50 transition-colors shadow-lg"
+      >
+        See All 20 Bots
+      </a>
+      <a
+        href="#pricing"
+        class="inline-flex items-center gap-2 px-8 py-4 border-2 border-white/40 text-white font-bold rounded-xl hover:bg-white/10 transition-colors"
+      >
+        View Plans
+      </a>
+    </div>
+  </Hero>
+
+  <TrustBar />
+
+  <!-- Why managed bots -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm font-semibold mb-4">
+            😤 The Problem with Self-Hosting Bots
+          </div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-6">Running popular bots yourself is a full-time job</h2>
+          <ul class="space-y-3">
+            {[
+              'Bots go offline and you have to restart them manually',
+              'Updates break things — you\'re the one who has to fix it',
+              'Security patches need applying regularly',
+              'Need a server running 24/7 just to keep bots alive',
+              'Debugging crashes at 3am because the bot is down',
+            ].map(p => (
+              <li class="flex items-start gap-3 text-gray-600">
+                <span class="text-red-400 flex-shrink-0 mt-0.5 font-bold">✗</span>
+                {p}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm font-semibold mb-4">
+            ✅ The Press5 Way
+          </div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-6">We run them. You just use them.</h2>
+          <ul class="space-y-3">
+            {[
+              'All 20 bots monitored and auto-restarted 24/7',
+              'We handle every update, patch, and security fix',
+              'Invite any bot to your server in under 2 minutes',
+              'Configure everything through a web dashboard',
+              'One subscription — all the bots you need',
+            ].map(p => (
+              <li class="flex items-start gap-3 text-gray-600">
+                <span class="text-green-500 flex-shrink-0 mt-0.5 font-bold">✓</span>
+                {p}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bot library -->
+  <section id="bots" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Our Bot Library — 20 Bots, Zero Hassle</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Every bot is hand-picked, self-hosted by us, and kept up to date. All available on Plus and Premium plans.
+        </p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {bots.map((bot, i) => (
+          <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+            <div class="text-2xl mb-2">{bot.icon}</div>
+            <h3 class="font-semibold text-gray-900 text-sm mb-1">{bot.name}</h3>
+            <p class="text-xs text-gray-500 leading-relaxed">{bot.desc}</p>
+          </div>
+        ))}
+      </div>
+      <p class="text-center text-sm text-gray-500 mt-8">
+        Starter plan includes any 5 bots of your choice. Plus &amp; Premium unlock all 20.
+      </p>
+    </div>
+  </section>
+
+  <!-- Lavalink callout -->
+  <section class="py-12 bg-white border-y border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-brand-gradient rounded-2xl p-8 flex flex-col sm:flex-row items-center gap-6 text-white">
+        <div class="text-5xl">🎵</div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-1">Also need a Lavalink server for your own music bot?</h3>
+          <p class="text-blue-100 text-sm">If you run your own Discord music bot and need a Lavalink audio backend, we host those too. UK-based, low latency.</p>
+        </div>
+        <a
+          href="/lavalink"
+          class="flex-shrink-0 px-6 py-3 bg-white text-brand-blue font-bold rounded-xl hover:bg-blue-50 transition-colors whitespace-nowrap"
+        >
+          View Lavalink Plans →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div id="pricing">
+    <PricingTable
+      client:load
+      tiers={tiers}
+      title="Simple, Honest Pricing"
+      subtitle="One subscription covers all your bots. No per-bot fees. Annual billing saves you 2 months."
+    />
+  </div>
+
+  <Accordion
+    client:load
+    title="Frequently Asked Questions"
+    items={faqs}
+  />
+
+  <CTABanner
+    title="20 bots. One subscription. Zero maintenance."
+    subtitle="Let us handle the infrastructure. You handle your community."
+    primaryHref="/contact?service=discord-bots"
+    primaryLabel="Get Started"
+    secondaryHref="#pricing"
+    secondaryLabel="Compare Plans"
+  />
+</Layout>

@@ -1,0 +1,87 @@
+---
+import Layout from '../components/layout/Layout.astro';
+import ContactForm from '../components/forms/ContactForm';
+
+const defaultSubject = Astro.url.searchParams.get('service') ?? 'General';
+---
+
+<Layout
+  title="Contact Us"
+  description="Get in touch with Press5.xyz for web hosting, TeamSpeak server hosting, or Discord bot hosting enquiries. We typically respond within 24 hours."
+>
+  <!-- Header strip -->
+  <div class="bg-brand-gradient py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-white mb-4">Get in Touch</h1>
+      <p class="text-xl text-blue-100 max-w-2xl mx-auto">
+        We typically reply within 24 hours. For urgent issues, join our TeamSpeak for a quicker response.
+      </p>
+    </div>
+  </div>
+
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <!-- Form -->
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Send us a message</h2>
+            <ContactForm client:load defaultSubject={defaultSubject} />
+          </div>
+        </div>
+
+        <!-- Info sidebar -->
+        <div class="space-y-6">
+          <!-- Response time -->
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+            <div class="text-2xl mb-3">⏱️</div>
+            <h3 class="font-bold text-gray-900 mb-2">Response Time</h3>
+            <p class="text-gray-600 text-sm">We typically reply within <strong>24 hours</strong>, often much sooner. For urgent support, use our TeamSpeak.</p>
+          </div>
+
+          <!-- TeamSpeak quick connect -->
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+            <div class="text-2xl mb-3">🎧</div>
+            <h3 class="font-bold text-gray-900 mb-2">Quick Support on TeamSpeak</h3>
+            <p class="text-gray-600 text-sm mb-4">Join our public server for a real-time conversation — often the fastest way to get answers.</p>
+            <a
+              href="ts3server://press5.xyz"
+              class="block text-center py-2.5 bg-brand-gradient text-white font-semibold rounded-xl text-sm hover:opacity-90 transition-opacity"
+            >
+              Connect to press5.xyz
+            </a>
+            <p class="text-xs text-gray-400 mt-2 text-center">Opens in TeamSpeak client</p>
+          </div>
+
+          <!-- Services -->
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+            <div class="text-2xl mb-3">💼</div>
+            <h3 class="font-bold text-gray-900 mb-3">We Can Help With</h3>
+            <ul class="space-y-2 text-sm text-gray-600">
+              <li class="flex items-center gap-2">
+                <span class="text-brand-blue">→</span> Web hosting setup & migration
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-brand-blue">→</span> TeamSpeak server orders
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-brand-blue">→</span> Discord bot hosting & deployment
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-brand-blue">→</span> Billing & account questions
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-brand-blue">→</span> Custom or enterprise requirements
+              </li>
+            </ul>
+          </div>
+
+          <!-- Disclaimer -->
+          <p class="text-xs text-gray-400 text-center">
+            Press5.xyz is UK-based. All prices quoted in GBP. We're real people, not a ticket system.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

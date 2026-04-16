@@ -1,0 +1,30 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  size?: 'default' | 'large';
+}
+
+const { title, subtitle, size = 'default' } = Astro.props;
+---
+
+<section class="relative bg-brand-gradient overflow-hidden">
+  <!-- Decorative background shapes -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/3 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center ${size === 'large' ? 'py-28 sm:py-36' : 'py-20 sm:py-28'}`}>
+    <h1 class={`font-extrabold text-white tracking-tight ${size === 'large' ? 'text-5xl sm:text-6xl lg:text-7xl' : 'text-4xl sm:text-5xl lg:text-6xl'}`}>
+      {title}
+    </h1>
+    {subtitle && (
+      <p class="mt-6 max-w-2xl mx-auto text-lg sm:text-xl text-blue-100 leading-relaxed">
+        {subtitle}
+      </p>
+    )}
+    <slot />
+  </div>
+</section>

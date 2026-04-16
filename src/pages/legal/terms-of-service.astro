@@ -1,0 +1,65 @@
+---
+import Layout from '../../components/layout/Layout.astro';
+const lastUpdated = 'April 2024';
+---
+
+<Layout
+  title="Terms of Service"
+  description="Press5.xyz terms of service — the rules and conditions for using our hosting services."
+>
+  <div class="bg-brand-gradient py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-extrabold text-white">Terms of Service</h1>
+      <p class="text-blue-100 mt-2">Last updated: {lastUpdated}</p>
+    </div>
+  </div>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2>1. Agreement</h2>
+      <p>By using Press5.xyz hosting services, you agree to these Terms of Service. If you do not agree, do not use our services.</p>
+
+      <h2>2. Acceptable Use</h2>
+      <p>You may not use our services to:</p>
+      <ul>
+        <li>Host illegal content under UK law</li>
+        <li>Send unsolicited email (spam)</li>
+        <li>Launch attacks (DDoS, port scanning, hacking) against any target</li>
+        <li>Host or distribute malware, ransomware, or phishing pages</li>
+        <li>Violate the intellectual property rights of others</li>
+        <li>Mine cryptocurrency</li>
+      </ul>
+
+      <h2>3. Payment and Billing</h2>
+      <p>Services are billed monthly or annually in advance. Failure to pay results in suspension after a 3-day grace period, followed by termination and data deletion after 14 days. We do not issue refunds for services already rendered, except within our 14-day money-back guarantee period for new customers.</p>
+
+      <h2>4. Uptime SLA</h2>
+      <p>We target 99.9% uptime for all services. Scheduled maintenance is announced in advance. SLA credits are available for downtime exceeding 0.1% in any calendar month — contact us to claim.</p>
+
+      <h2>5. Data and Backups</h2>
+      <p>While we perform backups as a courtesy, you are responsible for maintaining your own backups. We are not liable for data loss. We reserve the right to delete data from terminated accounts after 14 days.</p>
+
+      <h2>6. Termination</h2>
+      <p>We reserve the right to suspend or terminate accounts that violate these terms without notice. For other terminations, we will provide reasonable notice. You may cancel your service at any time — cancellations take effect at the end of the current billing period.</p>
+
+      <h2>7. Limitation of Liability</h2>
+      <p>Press5.xyz is not liable for any indirect, incidental, or consequential damages arising from use of our services. Our maximum liability is limited to the amount paid for the service in the previous 30 days.</p>
+
+      <h2>8. Changes to Terms</h2>
+      <p>We may update these terms. We will notify customers of material changes by email at least 14 days in advance. Continued use of services after the effective date constitutes acceptance.</p>
+
+      <h2>9. Governing Law</h2>
+      <p>These terms are governed by the laws of England and Wales.</p>
+
+      <h2>10. Contact</h2>
+      <p>For questions about these terms, <a href="/contact">contact us</a>.</p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  h2 { font-size: 1.375rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem; color: #111827; }
+  p, li { color: #374151; line-height: 1.75; margin-bottom: 0.75rem; }
+  ul { padding-left: 1.5rem; margin-bottom: 1rem; list-style-type: disc; }
+  a { color: #2563EB; text-decoration: underline; }
+</style>

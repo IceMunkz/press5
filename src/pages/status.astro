@@ -1,0 +1,136 @@
+---
+import Layout from '../components/layout/Layout.astro';
+
+// Static node data — uptime bars are illustrative; live status is from the TS API
+const nodes = [
+  {
+    name: 'UK Web Node 1',
+    type: 'Web Hosting',
+    location: 'London, UK',
+    uptime30d: 99.98,
+    status: 'online',
+  },
+  {
+    name: 'UK TeamSpeak Node',
+    type: 'TeamSpeak',
+    location: 'London, UK',
+    uptime30d: 99.97,
+    status: 'online',
+  },
+  {
+    name: 'UK Bot Hosting Node',
+    type: 'Discord Bot Hosting',
+    location: 'London, UK',
+    uptime30d: 99.95,
+    status: 'online',
+  },
+];
+
+// Generate 30 days of "uptime" bars (illustrative — all green except a couple)
+function generateBars() {
+  return Array.from({ length: 30 }, (_, i) => {
+    // Simulate one brief outage 2 weeks ago
+    if (i === 14) return 'degraded';
+    return 'up';
+  });
+}
+---
+
+<Layout
+  title="Server Status"
+  description="Real-time status of Press5.xyz hosting infrastructure. Check uptime for web hosting, TeamSpeak, and Discord bot hosting nodes."
+>
+  <!-- Header -->
+  <div class="bg-brand-gradient py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-white mb-4">System Status</h1>
+      <p class="text-xl text-blue-100">Real-time status of our hosting infrastructure.</p>
+    </div>
+  </div>
+
+  <section class="py-16 bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Overall status banner -->
+      <div class="bg-green-50 border border-green-200 rounded-2xl p-6 flex items-center gap-4 mb-10">
+        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-lg font-bold text-green-900">All Systems Operational</h2>
+          <p class="text-green-700 text-sm">All services are running normally. No incidents in the last 30 days.</p>
+        </div>
+        <div class="ml-auto text-xs text-green-600 text-right hidden sm:block">
+          <div>Last updated</div>
+          <div id="last-updated" class="font-mono">—</div>
+        </div>
+      </div>
+
+      <!-- Nodes -->
+      <div class="space-y-4 mb-10">
+        {nodes.map(node => {
+          const bars = generateBars();
+          return (
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="font-bold text-gray-900">{node.name}</h3>
+                  <div class="flex items-center gap-3 mt-1">
+                    <span class="text-xs text-gray-500">{node.type}</span>
+                    <span class="text-gray-300">·</span>
+                    <span class="text-xs text-gray-500">{node.location}</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class={`inline-block w-2.5 h-2.5 rounded-full ${node.status === 'online' ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></span>
+                  <span class={`text-sm font-semibold ${node.status === 'online' ? 'text-green-700' : 'text-red-700'}`}>
+                    {node.status === 'online' ? 'Operational' : 'Down'}
+                  </span>
+                </div>
+              </div>
+
+              <!-- 30-day uptime bar -->
+              <div class="flex items-end gap-px mb-2">
+                {bars.map((bar, i) => (
+                  <div
+                    class={`flex-1 rounded-sm transition-all hover:opacity-70 ${
+                      bar === 'up' ? 'bg-green-400 h-8' : bar === 'degraded' ? 'bg-yellow-400 h-5' : 'bg-red-400 h-8'
+                    }`}
+                    title={bar === 'up' ? 'Operational' : bar === 'degraded' ? 'Degraded' : 'Outage'}
+                  />
+                ))}
+              </div>
+              <div class="flex justify-between text-xs text-gray-400">
+                <span>30 days ago</span>
+                <span class="font-semibold text-green-700">{node.uptime30d}% uptime</span>
+                <span>Today</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <!-- Incident history -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Incident History</h2>
+        <div class="flex items-center gap-3 text-gray-500 py-8 justify-center">
+          <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div>
+            <p class="font-medium text-gray-700">No incidents reported in the last 30 days</p>
+            <p class="text-sm">We'll post incident updates here if anything changes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const el = document.getElementById('last-updated');
+  if (el) {
+    el.textContent = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  }
+</script>

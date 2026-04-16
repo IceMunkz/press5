@@ -1,0 +1,177 @@
+---
+import Layout from '../components/layout/Layout.astro';
+import Hero from '../components/sections/Hero.astro';
+import TrustBar from '../components/sections/TrustBar.astro';
+import FeatureGrid from '../components/sections/FeatureGrid.astro';
+import CTABanner from '../components/sections/CTABanner.astro';
+import FeaturedSites from '../components/sections/FeaturedSites.astro';
+import PricingTable from '../components/sections/PricingTable';
+import Accordion from '../components/ui/Accordion';
+
+const features = [
+  { icon: '⚡', title: 'NVMe SSD Storage', description: 'Ultra-fast NVMe SSDs give your site blazing load times. No spinning disks, no sluggish I/O.' },
+  { icon: '🔒', title: 'Free SSL Certificate', description: 'Every plan includes a free SSL certificate via Let\'s Encrypt. Auto-renews so you never have to worry.' },
+  { icon: '📈', title: '99.9% Uptime SLA', description: 'We guarantee your site stays online. Our infrastructure is monitored around the clock.' },
+  { icon: '📧', title: 'Email Accounts', description: 'Create professional email addresses at your domain. Included on all plans.' },
+  { icon: '🎛️', title: 'Easy Control Panel', description: 'Manage your hosting through a clean, intuitive control panel. Deploy WordPress in one click.' },
+  { icon: '🛡️', title: 'DDoS Protection', description: 'Enterprise-grade DDoS protection at the network level. Your site stays up even under attack.' },
+];
+
+const tiers = [
+  {
+    name: 'Starter',
+    monthlyPrice: 4.99,
+    annualPrice: 3.99,
+    description: 'Perfect for personal sites, portfolios, and small projects.',
+    features: [
+      '1 Website',
+      '10GB NVMe SSD Storage',
+      '100GB Bandwidth',
+      'Free SSL Certificate',
+      '5 Email Accounts',
+      'MySQL database',
+      '99.9% Uptime SLA',
+      '24/7 Support',
+    ],
+    ctaLabel: 'Get Starter',
+    ctaHref: '/contact?service=web-hosting&plan=starter',
+  },
+  {
+    name: 'Business',
+    monthlyPrice: 8.99,
+    annualPrice: 7.49,
+    description: 'Great for growing businesses and multiple sites.',
+    features: [
+      '10 Websites',
+      '50GB NVMe SSD Storage',
+      '500GB Bandwidth',
+      'Free SSL Certificates',
+      'Unlimited Email Accounts',
+      'Unlimited MySQL databases',
+      '99.9% Uptime SLA',
+      'Priority 24/7 Support',
+      'One-click WordPress install',
+    ],
+    popular: true,
+    ctaLabel: 'Get Business',
+    ctaHref: '/contact?service=web-hosting&plan=business',
+  },
+  {
+    name: 'Professional',
+    monthlyPrice: 16.99,
+    annualPrice: 14.16,
+    description: 'For agencies, developers, and high-traffic sites.',
+    features: [
+      'Unlimited Websites',
+      '200GB NVMe SSD Storage',
+      'Unlimited Bandwidth',
+      'Free SSL Certificates',
+      'Unlimited Email Accounts',
+      'Unlimited MySQL databases',
+      '99.9% Uptime SLA',
+      'Priority 24/7 Support',
+      'One-click WordPress install',
+      'Free domain (1st year)',
+      'SSH access',
+      'Staging environment',
+    ],
+    ctaLabel: 'Get Professional',
+    ctaHref: '/contact?service=web-hosting&plan=professional',
+  },
+];
+
+const faqs = [
+  {
+    question: 'Can I host WordPress on your servers?',
+    answer: 'Absolutely. All our plans support WordPress with one-click installation. We run PHP 8.x with the extensions WordPress needs, and provide MySQL databases on every plan.',
+  },
+  {
+    question: 'Do you offer a money-back guarantee?',
+    answer: 'We offer a 14-day money-back guarantee on all web hosting plans. If you\'re not happy, just let us know within the first 14 days and we\'ll refund you in full.',
+  },
+  {
+    question: 'Can I upgrade my plan later?',
+    answer: 'Yes, you can upgrade at any time. Upgrades are prorated — you only pay the difference for the remainder of your billing period. No downtime during upgrades.',
+  },
+  {
+    question: 'Do you include a free domain?',
+    answer: 'The Premium plan includes a free domain for the first year. We can also help you configure a domain you already own — just contact us after signing up.',
+  },
+  {
+    question: 'What control panel do you use?',
+    answer: 'We use a modern, easy-to-use control panel that covers everything you need: file manager, database management, email setup, SSL certificates, and one-click app installers.',
+  },
+  {
+    question: 'Where are your servers located?',
+    answer: 'Our servers are located in the UK, giving customers in the UK and Europe the best possible latency and performance.',
+  },
+  {
+    question: 'Can you migrate my existing site?',
+    answer: 'Yes, we\'ll migrate your site for free if you\'re switching from another host. Just send us your login details after signing up and we\'ll handle it.',
+  },
+  {
+    question: 'Do you support PHP, MySQL, and other common stacks?',
+    answer: 'Yes. We support PHP 7.4, 8.0, 8.1, 8.2, and 8.3. MySQL and MariaDB databases are included. We also support Node.js for certain plans — contact us for details.',
+  },
+];
+---
+
+<Layout
+  title="Web Hosting"
+  description="Fast SSD web hosting with free SSL, 99.9% uptime, and 24/7 support. Plans from £3/month. UK-based hosting since 2004."
+>
+  <Hero
+    title="Web Hosting Made Easy"
+    subtitle="Fast, secure, and reliable UK web hosting. Free SSL on every plan, 99.9% uptime guarantee, and real support from people who know what they're doing."
+  >
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a
+        href="#pricing"
+        class="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-blue font-bold rounded-xl hover:bg-blue-50 transition-colors shadow-lg"
+      >
+        View Plans
+      </a>
+      <a
+        href="/contact"
+        class="inline-flex items-center gap-2 px-8 py-4 border-2 border-white/40 text-white font-bold rounded-xl hover:bg-white/10 transition-colors"
+      >
+        Get a Quote
+      </a>
+    </div>
+  </Hero>
+
+  <TrustBar />
+
+  <FeatureGrid
+    title="Everything You Need in One Plan"
+    subtitle="No hidden extras. No upsells. Just solid hosting with all the features you actually need."
+    features={features}
+    columns={3}
+  />
+
+  <FeaturedSites />
+
+  <div id="pricing">
+    <PricingTable
+      client:load
+      tiers={tiers}
+      title="Simple, Honest Pricing"
+      subtitle="All prices in GBP. No setup fees. No contracts. Cancel any time."
+    />
+  </div>
+
+  <Accordion
+    client:load
+    title="Frequently Asked Questions"
+    items={faqs}
+  />
+
+  <CTABanner
+    title="Ready to launch your site?"
+    subtitle="Get started in minutes. Free site migration included."
+    primaryHref="/contact"
+    primaryLabel="Get Started"
+    secondaryHref="#pricing"
+    secondaryLabel="Compare Plans"
+  />
+</Layout>

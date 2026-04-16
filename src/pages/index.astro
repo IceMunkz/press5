@@ -1,0 +1,176 @@
+---
+import Layout from '../components/layout/Layout.astro';
+import Hero from '../components/sections/Hero.astro';
+import TrustBar from '../components/sections/TrustBar.astro';
+import FeatureGrid from '../components/sections/FeatureGrid.astro';
+import CTABanner from '../components/sections/CTABanner.astro';
+import FeaturedSites from '../components/sections/FeaturedSites.astro';
+import TSServerStatus from '../components/teamspeak/TSServerStatus';
+
+const services = [
+  {
+    icon: '🌐',
+    title: 'Web Hosting',
+    href: '/web-hosting',
+    description: 'Fast NVMe SSD web hosting with free SSL, 99.9% uptime guarantee, and 24/7 support. Plans from just £3/month.',
+  },
+  {
+    icon: '🎮',
+    title: 'Game Servers',
+    href: '/game-servers',
+    description: 'Bespoke game server packages built around your community. Minecraft, Valheim, ARK, Rust, DayZ and more. No generic slots.',
+  },
+  {
+    icon: '🎧',
+    title: 'TeamSpeak Hosting',
+    href: '/teamspeak',
+    description: 'Crystal-clear voice servers hosted by a team with 20+ years of TS experience. Low latency, DDoS protected.',
+  },
+  {
+    icon: '🤖',
+    title: 'Managed Discord Bots',
+    href: '/discord-bots',
+    description: 'We host and maintain 20 of the most popular Discord bots. Invite any to your server, configure and go.',
+  },
+  {
+    icon: '🎵',
+    title: 'Lavalink Hosting',
+    href: '/lavalink',
+    description: 'UK-based Lavalink audio nodes for Discord music bots. Spotify support, low latency, always online.',
+  },
+];
+
+const highlights = [
+  { icon: '⚡', title: '99.9% Uptime', description: 'Our infrastructure is built for reliability with redundant systems and proactive monitoring.' },
+  { icon: '🔒', title: 'Free SSL on All Plans', description: 'Every hosting plan includes a free SSL certificate. No extra charges, no configuration needed.' },
+  { icon: '🛡️', title: 'DDoS Protection', description: 'All servers are protected by enterprise-grade DDoS mitigation at the network level.' },
+  { icon: '🇬🇧', title: 'UK-Based', description: 'Our servers are hosted in the UK, giving UK and EU customers the lowest possible latency.' },
+  { icon: '📞', title: '24/7 Support', description: 'Get help any time via email or TeamSpeak. We actually respond — no ticket queues.' },
+  { icon: '💷', title: 'No Contracts', description: 'Pay month to month. No lock-in periods, no cancellation fees. Cancel any time, no questions asked.' },
+];
+---
+
+<Layout
+  title="Fast, Reliable UK Hosting"
+  description="Web hosting, TeamSpeak servers, and Discord bot hosting from a UK provider with 20+ years of experience. Plans from £3/month."
+>
+  <Hero
+    title="20 Years of Hosting. Built for Everyone."
+    subtitle="Web hosting, TeamSpeak servers, and Discord bot hosting — fast, reliable, and backed by real experience since 2004."
+    size="large"
+  >
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a
+        href="/contact"
+        class="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-blue font-bold rounded-xl hover:bg-blue-50 transition-colors shadow-lg text-lg"
+      >
+        Get Started
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+        </svg>
+      </a>
+      <a
+        href="ts3server://press5.xyz"
+        class="inline-flex items-center gap-2 px-8 py-4 border-2 border-white/40 text-white font-bold rounded-xl hover:bg-white/10 transition-colors text-lg"
+      >
+        Join Our TeamSpeak
+      </a>
+    </div>
+
+    <!-- Live TS status strip in hero -->
+    <div class="mt-10 flex justify-center">
+      <TSServerStatus compact={true} client:load />
+    </div>
+  </Hero>
+
+  <TrustBar />
+
+  <!-- Services overview -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Everything You Need to Host Online</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Five services, one provider, two decades of experience. We handle the infrastructure so you can focus on what matters.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        {services.map(service => (
+          <div class="group relative p-8 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+            <div class="text-4xl mb-5">{service.icon}</div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
+            <p class="text-gray-600 leading-relaxed mb-5">{service.description}</p>
+            <a
+              href={service.href}
+              class="inline-flex items-center gap-1 text-brand-blue font-semibold text-sm group-hover:gap-2 transition-all"
+            >
+              Learn more
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Full TS status widget -->
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-brand-blue rounded-full text-sm font-semibold mb-4">
+            🎧 Live Server
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            Netplayers — Our Public TeamSpeak Server
+          </h2>
+          <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+            We've run Netplayers, a free public TeamSpeak server, since 2009. Join, listen to the quality, and see exactly what you'd be getting for your own community before you commit to a plan.
+          </p>
+          <ul class="space-y-3 mb-8">
+            {['No registration required', 'Free to join and use', 'DDoS protected 24/7', 'Crystal-clear audio quality'].map(point => (
+              <li class="flex items-center gap-3 text-gray-700">
+                <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                {point}
+              </li>
+            ))}
+          </ul>
+          <a
+            href="/teamspeak"
+            class="inline-flex items-center gap-2 text-brand-blue font-semibold hover:gap-3 transition-all"
+          >
+            View TeamSpeak hosting plans
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </a>
+        </div>
+        <div>
+          <TSServerStatus client:load />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FeatureGrid
+    title="Why Choose Press5.xyz?"
+    subtitle="We're not a faceless reseller. We're a real hosting provider with years of hands-on experience."
+    features={highlights}
+    columns={3}
+  />
+
+  <FeaturedSites />
+
+  <CTABanner
+    title="Ready to get started?"
+    subtitle="Web hosting, game servers, TeamSpeak, Discord bots, and Lavalink — all under one roof. Plans from £3/month."
+    primaryHref="/contact"
+    primaryLabel="Get Started Today"
+    secondaryHref="/web-hosting"
+    secondaryLabel="View Plans"
+  />
+</Layout>

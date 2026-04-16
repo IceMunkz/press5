@@ -1,0 +1,137 @@
+---
+import Layout from '../components/layout/Layout.astro';
+import Hero from '../components/sections/Hero.astro';
+import TrustBar from '../components/sections/TrustBar.astro';
+import FeatureGrid from '../components/sections/FeatureGrid.astro';
+import CTABanner from '../components/sections/CTABanner.astro';
+import TSServerStatus from '../components/teamspeak/TSServerStatus';
+import SlotCalculator from '../components/teamspeak/SlotCalculator';
+import Accordion from '../components/ui/Accordion';
+
+const features = [
+  { icon: '⚡', title: 'Ultra-Low Latency', description: 'Our UK-based servers deliver sub-10ms ping for most UK and European users. Crystal-clear audio, no stuttering.' },
+  { icon: '🛡️', title: 'DDoS Protection', description: 'Enterprise-grade network-level DDoS mitigation. Your server stays online even under sustained attacks.' },
+  { icon: '🎨', title: 'Custom Server Banners', description: 'Upload a custom banner to make your server look professional. Stands out in the public server list.' },
+  { icon: '📁', title: 'File Transfer Enabled', description: 'Built-in TS file transfer lets your community share files directly through the client.' },
+  { icon: '🔑', title: 'Full Admin Access', description: 'You get full ServerAdmin privileges. Install bots, configure permissions, manage channels your way.' },
+  { icon: '⚙️', title: 'Server Query Access', description: 'SSH and raw ServerQuery access included. Run bots, monitoring scripts, or custom integrations.' },
+  { icon: '🔄', title: 'Instant Provisioning', description: 'Your server is live within minutes of payment. No waiting, no manual setup delays.' },
+  { icon: '💾', title: 'Daily Backups', description: 'We back up your server configuration daily. If something goes wrong, we can restore it quickly.' },
+];
+
+const faqs = [
+  {
+    question: 'What version of TeamSpeak do you host?',
+    answer: 'We host TeamSpeak 3 servers, which is the current stable release. We keep servers updated to the latest version automatically.',
+  },
+  {
+    question: 'What is a "slot"?',
+    answer: 'A slot is one concurrent connection. If you have a 25-slot server, up to 25 people can be connected at the same time. Channels don\'t count against slots — you can have as many channels as you like.',
+  },
+  {
+    question: 'Can I run bots on my server?',
+    answer: 'Yes. Server Query access is included, which is what bots use to connect. Popular bots like Sinusbot and TS-Bot are compatible with our servers.',
+  },
+  {
+    question: 'Do you provide a free trial?',
+    answer: 'You can test the quality right now by connecting to Netplayers, our free public server at press5.xyz — it\'s been running since 2009. For your own server, we offer a 14-day money-back guarantee.',
+  },
+  {
+    question: 'Can I upgrade my slot count?',
+    answer: 'Yes, you can upgrade at any time with no downtime. The price difference is prorated to your next billing date.',
+  },
+  {
+    question: 'Do I keep my server address when I upgrade?',
+    answer: 'Yes. Your server address and port stay the same when you upgrade or change plans. Your community won\'t notice anything changed except performance improvements.',
+  },
+  {
+    question: 'Are you the actual host, or are you reselling?',
+    answer: 'We are the actual host. We\'ve been running our own TeamSpeak infrastructure since 2004 — not reselling someone else\'s service. You\'re talking directly to the people who run the hardware.',
+  },
+];
+---
+
+<Layout
+  title="TeamSpeak Server Hosting"
+  description="UK TeamSpeak server hosting from a provider with 20+ years of experience. Home of Netplayers, running since 2009. Low latency, DDoS protected, instant provisioning."
+>
+  <Hero
+    title="The UK's Most Experienced TeamSpeak Host"
+    subtitle="Home of Netplayers — our public community server running since 2009. We know TeamSpeak inside out. Low latency, DDoS protected, always online."
+  >
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a
+        href="#calculator"
+        class="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-blue font-bold rounded-xl hover:bg-blue-50 transition-colors shadow-lg"
+      >
+        Get a Server
+      </a>
+      <a
+        href="ts3server://press5.xyz"
+        class="inline-flex items-center gap-2 px-8 py-4 border-2 border-white/40 text-white font-bold rounded-xl hover:bg-white/10 transition-colors"
+      >
+        Try Our Free Server
+      </a>
+    </div>
+  </Hero>
+
+  <TrustBar />
+
+  <!-- Live server status + connect section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-brand-blue rounded-full text-sm font-semibold mb-4">
+            🔴 Live Status
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            Netplayers — Try Before You Buy
+          </h2>
+          <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+            Netplayers is our free public TeamSpeak server that anyone can join. We've kept it running continuously since 2009. Connect now and judge the quality for yourself before committing to your own server.
+          </p>
+          <div class="bg-gray-50 rounded-2xl p-6 mb-6">
+            <h3 class="font-semibold text-gray-900 mb-3">Embed this badge on your site</h3>
+            <p class="text-sm text-gray-600 mb-3">Show your community you're using Press5 hosting with a live status badge:</p>
+            <div class="bg-gray-900 rounded-xl p-4 font-mono text-xs text-green-400 overflow-x-auto">
+              {'<img src="https://press5.xyz/api/ts-badge.svg" alt="Press5 TS Status">'}
+            </div>
+            <div class="mt-3">
+              <img src="/api/ts-badge.svg" alt="Press5 TS Status" class="h-5" onerror="this.style.display='none'" />
+            </div>
+          </div>
+        </div>
+        <div>
+          <TSServerStatus client:load />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FeatureGrid
+    title="Everything Included. No Extras."
+    subtitle="Every TeamSpeak server we host comes with the full feature set. No nickel-and-diming."
+    features={features}
+    columns={4}
+  />
+
+  <div id="calculator">
+    <SlotCalculator client:load />
+  </div>
+
+  <Accordion
+    client:load
+    title="TeamSpeak Hosting FAQ"
+    items={faqs}
+  />
+
+  <CTABanner
+    title="Ready for your own TeamSpeak server?"
+    subtitle="Instant provisioning, 20 years of experience, and a 14-day money-back guarantee."
+    primaryHref="/contact"
+    primaryLabel="Order Now"
+    secondaryHref="#calculator"
+    secondaryLabel="Calculate Price"
+  />
+</Layout>

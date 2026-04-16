@@ -1,0 +1,254 @@
+---
+import Layout from '../components/layout/Layout.astro';
+import Hero from '../components/sections/Hero.astro';
+import TrustBar from '../components/sections/TrustBar.astro';
+import FeatureGrid from '../components/sections/FeatureGrid.astro';
+import CTABanner from '../components/sections/CTABanner.astro';
+import Accordion from '../components/ui/Accordion';
+
+const games = [
+  { icon: '⛏️', name: 'Minecraft', tags: ['Java', 'Bedrock', 'Modpacks'] },
+  { icon: '🌿', name: 'Valheim', tags: ['Vanilla', 'Modded'] },
+  { icon: '🦕', name: 'ARK: Survival', tags: ['ASE', 'ASA', 'Cluster'] },
+  { icon: '🔧', name: 'Rust', tags: ['Vanilla', 'Modded', 'Solo/Duo'] },
+  { icon: '🧟', name: 'DayZ', tags: ['Vanilla', 'Custom Mods'] },
+  { icon: '🏚️', name: '7 Days to Die', tags: ['Vanilla', 'Modded'] },
+  { icon: '🧟', name: 'Project Zomboid', tags: ['Vanilla', 'Mods'] },
+  { icon: '🏝️', name: 'Palworld', tags: ['Vanilla'] },
+  { icon: '🚀', name: 'Space Engineers', tags: ['Vanilla', 'Modded'] },
+  { icon: '🌍', name: 'Garry\'s Mod', tags: ['DarkRP', 'TTT', 'Sandbox'] },
+  { icon: '⚔️', name: 'Conan Exiles', tags: ['Vanilla', 'Modded'] },
+  { icon: '🎯', name: 'CS2 / CSGO', tags: ['Competitive', 'Community'] },
+  { icon: '🏰', name: 'V Rising', tags: ['Vanilla', 'Modded'] },
+  { icon: '🛸', name: 'Satisfactory', tags: ['Vanilla'] },
+  { icon: '🧱', name: 'Terraria', tags: ['Vanilla', 'Modded'] },
+  { icon: '🎮', name: 'Don\'t Starve Together', tags: ['Vanilla', 'Mods'] },
+  { icon: '🚁', name: 'Arma 3', tags: ['Vanilla', 'Modded', 'Milsim'] },
+  { icon: '🌲', name: 'The Forest / Sons', tags: ['Co-op'] },
+  { icon: '🏔️', name: 'Enshrouded', tags: ['Vanilla'] },
+  { icon: '🎲', name: 'Other Games', tags: ['Just ask us'] },
+];
+
+const features = [
+  { icon: '🎯', title: 'Bespoke to Your Community', description: 'No one-size-fits-all slots here. We sit down with you and build a package around your player count, playstyle, and mod list.' },
+  { icon: '🛡️', title: 'DDoS Protection', description: 'Enterprise-grade network protection keeps your server online even during sustained attacks. Your players stay connected.' },
+  { icon: '⚡', title: 'NVMe SSD Storage', description: 'Fast NVMe drives mean fast world loading and near-zero I/O lag. Critical for modded servers with large world files.' },
+  { icon: '💾', title: 'Automated Backups', description: 'Daily automatic backups with easy one-click restores. Never lose your community\'s progress from a bad update or crash.' },
+  { icon: '🔑', title: 'Full Admin Access', description: 'Complete control — RCON, FTP, configuration files, mod management. It\'s your server, run it exactly how you want.' },
+  { icon: '🔄', title: 'Automatic Updates', description: 'We can handle game and mod updates automatically, so your server is always on the latest version with zero downtime.' },
+  { icon: '📊', title: 'Performance Monitoring', description: 'We monitor your server around the clock. If it crashes, we restart it immediately — often before you even notice.' },
+  { icon: '🎨', title: 'Custom Configuration', description: 'Tweaked spawn rates, custom maps, specific mod loadouts, private whitelists — we configure it the way your community needs it.' },
+];
+
+const faqs = [
+  {
+    question: 'What does "bespoke" mean for game servers?',
+    answer: 'Rather than picking a fixed slot count from a dropdown, you tell us about your community — how many players, what game, what mods, what kind of experience you want — and we build you a package that fits. This means you get the right amount of RAM, CPU, and storage for your specific setup, not a generic overcrowded node.',
+  },
+  {
+    question: 'Which games do you support?',
+    answer: 'We support a wide range of popular multiplayer games including Minecraft (Java & Bedrock), Valheim, ARK, Rust, DayZ, Project Zomboid, 7 Days to Die, Garry\'s Mod, CS2, and many more. If your game isn\'t listed, just ask — if it runs on Linux, we can almost certainly host it.',
+  },
+  {
+    question: 'Can I run mods and plugins?',
+    answer: 'Absolutely. Modded servers are our speciality. We\'ll help you set up your mod list, manage mod updates, and resolve compatibility issues. For Minecraft we support Paper, Spigot, Forge, Fabric, and more. For other games we support whatever the official mod support allows.',
+  },
+  {
+    question: 'What if I want to run a modpack like ATM or FTB?',
+    answer: 'No problem. We\'ll install and configure the modpack for you, allocate the right amount of RAM (modpacks are hungry), and make sure it runs well for your community. Just let us know which modpack and version you want.',
+  },
+  {
+    question: 'Can I migrate an existing server to you?',
+    answer: 'Yes. Send us your world files and config, and we\'ll migrate everything over. Your players won\'t notice the move — same world, same progress, just better hosting.',
+  },
+  {
+    question: 'How do I get started?',
+    answer: 'Contact us via the form below. Tell us your game, rough player count, and any specific requirements. We\'ll come back to you within 24 hours with a custom quote.',
+  },
+  {
+    question: 'Do you offer server management as an ongoing service?',
+    answer: 'Yes. Beyond just hosting, we can handle all the admin work — updates, backups, player management, configuration changes. It\'s an option on top of hosting for communities that just want to play rather than manage.',
+  },
+  {
+    question: 'Is there a minimum contract?',
+    answer: 'No minimum contract. We bill monthly and you can cancel any time. For the bespoke packages we ask for a brief setup call so we get everything right from day one, but there\'s no lock-in after that.',
+  },
+];
+---
+
+<Layout
+  title="Game Server Hosting"
+  description="Bespoke game server hosting built around your community. Minecraft, Valheim, ARK, Rust, DayZ and more. UK-based, DDoS protected, fully managed."
+>
+  <Hero
+    title="Game Servers Built Around Your Community"
+    subtitle="No generic slot packages. We build bespoke game servers tailored to your community's playstyle, player count, and mod list. UK-based, DDoS protected, always online."
+  >
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a
+        href="#games"
+        class="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-blue font-bold rounded-xl hover:bg-blue-50 transition-colors shadow-lg"
+      >
+        See Supported Games
+      </a>
+      <a
+        href="/contact?service=game-servers"
+        class="inline-flex items-center gap-2 px-8 py-4 border-2 border-white/40 text-white font-bold rounded-xl hover:bg-white/10 transition-colors"
+      >
+        Get a Custom Quote
+      </a>
+    </div>
+  </Hero>
+
+  <TrustBar />
+
+  <!-- Why bespoke -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-brand-blue rounded-full text-sm font-semibold mb-4">
+            🎮 Our Approach
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+            Generic slot packages don't fit real communities
+          </h2>
+          <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+            Most hosts sell you 10 slots, 20 slots, or 50 slots on an overcrowded node shared with hundreds of other servers. When you're actually playing, you feel it — lag spikes, slow world loading, crashes at peak time.
+          </p>
+          <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+            We do it differently. You tell us about your community and we build a package that actually fits — the right RAM for your mod list, the right CPU for your player count, your configuration from day one.
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            {[
+              { label: 'Generic hosts', items: ['Fixed slot tiers', 'Overcrowded nodes', 'You configure everything', 'Support via ticket only'] },
+              { label: 'Press5.xyz', items: ['Custom package for you', 'Dedicated resources', 'We set it up for you', 'Talk to a real person'] },
+            ].map((col, i) => (
+              <div class={`rounded-xl p-5 ${i === 0 ? 'bg-red-50 border border-red-100' : 'bg-green-50 border border-green-100'}`}>
+                <p class={`text-sm font-bold mb-3 ${i === 0 ? 'text-red-700' : 'text-green-700'}`}>{col.label}</p>
+                <ul class="space-y-2">
+                  {col.items.map(item => (
+                    <li class={`text-sm flex items-center gap-2 ${i === 0 ? 'text-red-600' : 'text-green-700'}`}>
+                      <span>{i === 0 ? '✗' : '✓'}</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="bg-gray-900 rounded-2xl p-8 text-white">
+          <h3 class="text-xl font-bold mb-6">Get a custom quote</h3>
+          <p class="text-gray-400 text-sm mb-8">Tell us about your community and we'll come back with a package built around you. Typical reply within a few hours.</p>
+          <ul class="space-y-4 mb-8">
+            {[
+              { step: '1', text: 'Tell us your game, player count, and mod requirements' },
+              { step: '2', text: 'We spec out a server configured for your exact needs' },
+              { step: '3', text: 'We build and test it before handing you the keys' },
+              { step: '4', text: 'Ongoing support whenever you need changes' },
+            ].map(item => (
+              <li class="flex items-start gap-4">
+                <span class="flex-shrink-0 w-7 h-7 rounded-full bg-brand-blue text-white text-sm font-bold flex items-center justify-center">
+                  {item.step}
+                </span>
+                <span class="text-gray-300 text-sm leading-relaxed">{item.text}</span>
+              </li>
+            ))}
+          </ul>
+          <a
+            href="/contact?service=game-servers"
+            class="block w-full text-center py-3 bg-brand-gradient text-white font-semibold rounded-xl hover:opacity-90 transition-opacity"
+          >
+            Request a Quote
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Game list -->
+  <section id="games" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Supported Games</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          From vanilla survival to heavily modded communities. If your game isn't listed, ask us — if it runs on Linux, we can host it.
+        </p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        {games.map(game => (
+          <div class="bg-white rounded-xl p-4 border border-gray-100 hover:border-brand-blue hover:shadow-md transition-all duration-200 text-center">
+            <div class="text-3xl mb-2">{game.icon}</div>
+            <p class="font-semibold text-gray-900 text-sm mb-2">{game.name}</p>
+            <div class="flex flex-wrap gap-1 justify-center">
+              {game.tags.map(tag => (
+                <span class="text-xs px-2 py-0.5 bg-blue-50 text-brand-blue rounded-full font-medium">{tag}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <FeatureGrid
+    title="Everything Managed for You"
+    subtitle="We handle the technical side so your community can focus on playing."
+    features={features}
+    columns={4}
+  />
+
+  <!-- Social proof / community focus -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Built for Communities, Not Just Servers</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          We've been running community infrastructure since 2004. We know what matters when you're trying to run a great experience for your players.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {[
+          {
+            icon: '🧑‍🤝‍🧑',
+            title: 'Community First',
+            description: 'Your players\' experience is the goal. We spec every server for peak concurrent usage, not just average loads.',
+          },
+          {
+            icon: '🔧',
+            title: 'Hands-On Setup',
+            description: 'We configure everything from scratch — your mod list, your world settings, your whitelist. Ready to play from day one.',
+          },
+          {
+            icon: '📞',
+            title: 'Real Support',
+            description: 'When something goes wrong at 11pm on a Friday, you can reach us. No ticket queues, no automated replies — real people.',
+          },
+        ].map(card => (
+          <div class="text-center p-8 bg-gray-50 rounded-2xl">
+            <div class="text-4xl mb-4">{card.icon}</div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">{card.title}</h3>
+            <p class="text-gray-600 leading-relaxed">{card.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Accordion
+    client:load
+    title="Game Server Hosting FAQ"
+    items={faqs}
+  />
+
+  <CTABanner
+    title="Ready to build your community's perfect server?"
+    subtitle="Tell us about your game, your players, and your vision. We'll build the rest."
+    primaryHref="/contact?service=game-servers"
+    primaryLabel="Get a Custom Quote"
+    secondaryHref="#games"
+    secondaryLabel="Browse Supported Games"
+  />
+</Layout>
