@@ -3,12 +3,16 @@ interface Props {
   title: string;
   subtitle?: string;
   size?: 'default' | 'large';
+  gradient?: string;
 }
 
-const { title, subtitle, size = 'default' } = Astro.props;
+const { title, subtitle, size = 'default', gradient } = Astro.props;
 ---
 
-<section class="relative bg-brand-gradient overflow-hidden">
+<section
+  class={`relative overflow-hidden ${!gradient ? 'bg-brand-gradient' : ''}`}
+  style={gradient ? `background: ${gradient}` : undefined}
+>
   <!-- Decorative background shapes -->
   <div class="absolute inset-0 overflow-hidden pointer-events-none">
     <div class="absolute -top-24 -right-24 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
