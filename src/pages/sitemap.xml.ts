@@ -7,6 +7,7 @@ const pages = [
   { url: '/web-hosting', priority: '0.9', changefreq: 'weekly' },
   { url: '/game-servers', priority: '0.9', changefreq: 'weekly' },
   { url: '/teamspeak', priority: '0.9', changefreq: 'weekly' },
+  { url: '/clanbot', priority: '0.8', changefreq: 'weekly' },
   { url: '/discord-bots', priority: '0.9', changefreq: 'weekly' },
   { url: '/lavalink', priority: '0.9', changefreq: 'weekly' },
   { url: '/contact', priority: '0.8', changefreq: 'monthly' },

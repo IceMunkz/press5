@@ -1,0 +1,30 @@
+---
+/* A ClanBot card for the Discord-bots and game-servers pages:
+   <ClanBotCard /> (or <ClanBotCard bundle /> on the Rust server page).
+   Links to the Press5 ClanBot page; buying happens on clanbot.online. */
+interface Props { bundle?: boolean }
+const { bundle = false } = Astro.props;
+---
+
+<section class="py-12 bg-white">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="rounded-2xl p-8 sm:p-10 text-white shadow-xl flex flex-col md:flex-row gap-8 items-center"
+      style="background: linear-gradient(135deg, #b4532a 0%, #d97757 55%, #7c2d12 100%)">
+      <div class="flex-1">
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/15 rounded-full text-sm font-semibold mb-3">
+          {bundle ? '🦀 For your Rust server' : '🤖 Our own bot'}
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-bold mb-3">ClanBot — the Rust clan bot</h2>
+        <p class="text-orange-50 leading-relaxed">
+          {bundle
+            ? 'Pair it with your Press5 Rust server: raid alerts over Rust+, a live map, smart switches, and raids and wipes the bot plans with your clan.'
+            : 'Raid alerts over Rust+, raids where the bot tells everyone their job and kit and waits for !ready, wipe planning, announcements people answer, and a live map. Your own bot, not a shared one.'}
+        </p>
+      </div>
+      <div class="flex flex-col gap-3 shrink-0">
+        <a href="https://clanbot.online" class="inline-flex justify-center px-6 py-3 bg-white text-orange-700 font-bold rounded-xl hover:bg-orange-50 transition-colors">Get ClanBot →</a>
+        <a href="/clanbot" class="inline-flex justify-center px-6 py-3 border-2 border-white/40 font-bold rounded-xl hover:bg-white/10 transition-colors">What it does</a>
+      </div>
+    </div>
+  </div>
+</section>

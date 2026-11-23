@@ -1,0 +1,71 @@
+---
+import Layout from '../components/layout/Layout.astro';
+import Hero from '../components/sections/Hero.astro';
+import FeatureGrid from '../components/sections/FeatureGrid.astro';
+import CTABanner from '../components/sections/CTABanner.astro';
+import Accordion from '../components/ui/Accordion';
+
+/* ClanBot — the Rust clan bot, sold and set up on clanbot.online. This page
+   is the Press5 shop window for it: every "get it" link goes to
+   clanbot.online, which has the checkout, the setup and the legal pages. */
+const SHOP = 'https://clanbot.online';
+
+const features = [
+  { icon: '🚨', title: 'Raid alerts that reach you', description: 'A ping the second your Tool Cupboard is hit — over Rust+ push, so it reaches you with the game closed.' },
+  { icon: '⚔️', title: 'Raids people can follow', description: 'Jobs — raid base builder, defender, rockets, breacher, turrets — each with its kit. The bot tells every player their job, kit, time and meeting spot, waits for !ready, and calls raid time.' },
+  { icon: '🧭', title: 'Wipe planning', description: 'Wipe date and RSVPs, what we are building (paste a link from a creative server), jobs and a checklist anyone can tick.' },
+  { icon: '📣', title: 'Announcements people answer', description: 'Post to Discord with buttons — I\'m in / Maybe / Can\'t, Got it, or a poll — and see who answered.' },
+  { icon: '🗺️', title: 'Live map', description: 'Your team, cargo, heli, Bradley and raids on the real map, updated every second, with replay.' },
+  { icon: '🔌', title: 'Smart switches', description: 'Turrets, SAMs, doors and lights from Discord, the web or team chat. Pair in game and name it with !pair.' },
+  { icon: '🏠', title: 'Clan HQ', description: 'Every member sees this week on one page: their raid job, the next wipe, their tasks and announcements.' },
+  { icon: '🛡️', title: 'Clan management', description: 'Roster, ranks synced to Discord roles, one-button join with Steam, recruitment, tickets and a mod log.' },
+];
+
+const faqs = [
+  { question: 'What is ClanBot?', answer: 'A Discord bot and web dashboard for Rust clans and groups. It connects to the game through Rust+ (the official companion app API) for raid alerts, the live map and smart switches, and runs your clan all year: roster, wipe and raid planning, announcements and recruitment.' },
+  { question: 'Where do I buy it?', answer: 'On clanbot.online. You sign in with Steam, subscribe monthly and set it up in about five minutes. Press5 runs the servers it lives on.' },
+  { question: 'Is it a shared bot?', answer: 'No. Every clan gets its own bot with its own database — nobody else\'s clan is in it.' },
+  { question: 'We are only a few friends — is it worth it?', answer: 'Yes. Pick "A few friends" and the menu shrinks to what a small group uses. You can even skip Discord: alerts come to team chat and the web dashboard does the rest.' },
+  { question: 'Can it get me banned?', answer: 'No. It uses the same Rust+ API as Facepunch\'s own phone app and only sees what your account can already see.' },
+  { question: 'Does it come with Press5 Rust server hosting?', answer: 'They work together: point ClanBot at your Press5 Rust server like any other. Ask us about running both.' },
+];
+---
+
+<Layout
+  title="ClanBot — the Rust clan bot for Discord"
+  description="ClanBot runs your Rust clan from Discord: raid alerts over Rust+, raid and wipe planning the bot tells everyone about, announcements people answer, live map and smart switches. Your own bot, not a shared one."
+  faqs={faqs}
+>
+  <Hero
+    gradient="linear-gradient(135deg, #b4532a 0%, #d97757 55%, #7c2d12 100%)"
+    title="ClanBot — run your Rust clan from Discord"
+    subtitle="Raid alerts that wake you up, raids where everyone knows their job and kit, wipe planning, and announcements people actually answer. Your own bot, set up in five minutes."
+  >
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href={SHOP} class="inline-flex items-center gap-2 px-8 py-4 bg-white text-orange-700 font-bold rounded-xl hover:bg-orange-50 transition-colors shadow-lg">
+        Get ClanBot →
+      </a>
+      <a href={`${SHOP}/#features`} class="inline-flex items-center gap-2 px-8 py-4 border-2 border-white/40 text-white font-bold rounded-xl hover:bg-white/10 transition-colors">
+        See everything it does
+      </a>
+    </div>
+  </Hero>
+
+  <FeatureGrid
+    title="What your clan gets"
+    subtitle="Every feature is included. One monthly price, cancel any time."
+    features={features}
+    columns={4}
+  />
+
+  <Accordion client:load title="ClanBot FAQ" items={faqs} />
+
+  <CTABanner
+    title="Stop organising raids in voice chat."
+    subtitle="Sign in with Steam on clanbot.online — your bot is running the same day."
+    primaryHref={SHOP}
+    primaryLabel="Get ClanBot"
+    secondaryHref="/game-servers"
+    secondaryLabel="Rust server hosting"
+  />
+</Layout>
